@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/src/blocs/comments/comments_provider.dart';
 import 'package:news_app/src/blocs/stories/stories_provider.dart';
-import 'package:news_app/src/screens/new_detail.dart';
+import 'package:news_app/src/screens/news_detail.dart';
 
 import 'screens/news_list.dart';
 
