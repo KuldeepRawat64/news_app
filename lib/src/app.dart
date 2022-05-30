@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:news_app/src/blocs/comments/comments_provider.dart';
 import 'package:news_app/src/blocs/stories/stories_provider.dart';
 import 'package:news_app/src/screens/new_detail.dart';
 
@@ -9,12 +10,14 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StoriesProvider(
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'News',
-        home: const NewsList(),
-        onGenerateRoute: routes,
+    return CommentsProvider(
+      child: StoriesProvider(
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'News',
+          home: const NewsList(),
+          onGenerateRoute: routes,
+        ),
       ),
     );
   }
@@ -24,8 +27,12 @@ class App extends StatelessWidget {
       return MaterialPageRoute(builder: (context) => const NewsList());
     } else {
       return MaterialPageRoute(builder: ((context) {
+        final commnetsBloc = CommentsProvider.of(context);
         final itemId = int.parse(settings.name!.replaceFirst('/', ''));
-        return NewsDetail(id: itemId);
+
+        commnetsBloc.fetchItemWithComments(itemId);
+
+        return NewsDetail(itemId: itemId);
       }));
     }
   }

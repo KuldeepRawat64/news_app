@@ -8,7 +8,7 @@ class CommentsBloc {
   final _repository = Repository();
 
 // Streams
-  Stream<Map<int, Future<ItemModel>>>? get itemWithComments =>
+  Stream<Map<int, Future<ItemModel>>> get itemWithComments =>
       _commentsOutput.stream;
 
 // Sink
@@ -26,8 +26,9 @@ class CommentsBloc {
     return ScanStreamTransformer<int, Map<int, Future<ItemModel>>>(
         (cache, int id, index) {
       cache[id] = _repository.fetchItem(id);
-      cache[id]!.then((ItemModel item) =>
-          item.kids.forEach((kidId) => fetchItemWithComments(kidId)));
+      cache[id]?.then((ItemModel item) {
+        item.kids.forEach((kidId) => fetchItemWithComments(kidId));
+      });
       return cache;
     }, <int, Future<ItemModel>>{});
   }
