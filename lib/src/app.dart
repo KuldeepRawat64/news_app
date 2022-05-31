@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:news_app/src/blocs/comments/comments_provider.dart';
 import 'package:news_app/src/blocs/stories/stories_provider.dart';
 import 'package:news_app/src/screens/news_detail.dart';
-
 import 'screens/news_list.dart';
 
 class App extends StatelessWidget {
@@ -15,7 +14,6 @@ class App extends StatelessWidget {
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'News',
-          home: const NewsList(),
           onGenerateRoute: routes,
         ),
       ),
@@ -24,7 +22,13 @@ class App extends StatelessWidget {
 
   Route routes(RouteSettings settings) {
     if (settings.name == '/') {
-      return MaterialPageRoute(builder: (context) => const NewsList());
+      return MaterialPageRoute(builder: (context) {
+        final storiesBloc = StoriesProvider.of(context);
+
+        storiesBloc.fetchTopIds();
+
+        return const NewsList();
+      });
     } else {
       return MaterialPageRoute(builder: ((context) {
         final commnetsBloc = CommentsProvider.of(context);
